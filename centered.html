@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centered — Take Back Your Attention</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f4f2ee;
+      --off-white: #ede9e3;
+      --slate: #2e4a5a;
+      --slate-light: #4a6878;
+      --gold: #c8972a;
+      --gold-glow: rgba(200, 151, 42, 0.18);
+      --ring: rgba(46, 74, 90, 0.18);
+      --text: #2a2a2a;
+      --muted: #7a7a7a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(244, 242, 238, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(46,74,90,0.08);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--slate);
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 400; letter-spacing: 0.05em;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--slate); }
+    .nav-cta {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.07em;
+      color: var(--slate); background: transparent;
+      border: 1px solid var(--slate); border-radius: 2rem;
+      padding: 0.45rem 1.2rem; cursor: pointer; transition: all 0.25s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--slate); color: var(--cream); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Concentric rings SVG animation */
+    .rings-wrap {
+      position: relative;
+      width: 220px; height: 220px;
+      margin-bottom: 3rem;
+    }
+    .rings-wrap svg { width: 100%; height: 100%; }
+
+    .ring {
+      fill: none; stroke: var(--ring); stroke-width: 1;
+      transform-origin: 110px 110px;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    .ring:nth-child(1) { animation-delay: 0s; }
+    .ring:nth-child(2) { animation-delay: 0.4s; }
+    .ring:nth-child(3) { animation-delay: 0.8s; }
+    .ring:nth-child(4) { animation-delay: 1.2s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .dot-glow {
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(200,151,42,0.7)); }
+    }
+
+    /* Background texture rings */
+    .bg-rings {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px; height: 900px;
+      pointer-events: none; opacity: 0.06;
+    }
+    .bg-rings circle { fill: none; stroke: var(--slate); stroke-width: 1; }
+
+    .hero-tag {
+      font-size: 0.75rem; letter-spacing: 0.18em; font-weight: 400;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 300; line-height: 1.1;
+      color: var(--slate);
+      max-width: 700px;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    }
+    h1 em { font-style: italic; color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 1.6rem;
+      font-size: 1.05rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted); max-width: 480px;
+      opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; margin-top: 2.8rem; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn-primary {
+      background: var(--slate); color: var(--cream);
+      border: none; border-radius: 2rem;
+      padding: 0.85rem 2rem; font-size: 0.88rem; font-weight: 500;
+      letter-spacing: 0.05em; cursor: pointer; transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary:hover { background: var(--slate-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(46,74,90,0.18); }
+    .btn-ghost {
+      background: transparent; color: var(--slate);
+      border: 1px solid rgba(46,74,90,0.3); border-radius: 2rem;
+      padding: 0.85rem 2rem; font-size: 0.88rem; font-weight: 400;
+      letter-spacing: 0.05em; cursor: pointer; transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-ghost:hover { border-color: var(--slate); transform: translateY(-1px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PROBLEM STRIP ── */
+    .problem-strip {
+      background: var(--slate);
+      color: var(--cream);
+      padding: 4rem 3rem;
+      text-align: center;
+    }
+    .problem-strip p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      font-weight: 300; line-height: 1.55;
+      max-width: 700px; margin: 0 auto;
+    }
+    .problem-strip p em { font-style: italic; color: var(--gold); }
+
+    /* ── LAYERS SECTION ── */
+    section { padding: 6rem 2rem; }
+    .section-label {
+      font-size: 0.72rem; letter-spacing: 0.2em; font-weight: 400;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 1rem;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; color: var(--slate);
+      text-align: center; max-width: 600px;
+      margin: 0 auto 4rem;
+    }
+
+    .layers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .layer-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(46,74,90,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .layer-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .layer-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(46,74,90,0.1); }
+    .layer-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 300; color: var(--off-white);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .layer-name {
+      font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500; margin-bottom: 0.6rem;
+    }
+    .layer-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; color: var(--slate);
+      margin-bottom: 0.8rem;
+    }
+    .layer-card p {
+      font-size: 0.9rem; line-height: 1.7; color: var(--muted); font-weight: 300;
+    }
+    .layer-features { margin-top: 1.2rem; }
+    .layer-features li {
+      font-size: 0.83rem; color: var(--slate-light); padding: 0.3rem 0;
+      list-style: none; display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+    .layer-features li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy {
+      background: var(--off-white);
+      padding: 6rem 2rem;
+    }
+    .phil-inner {
+      max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    .phil-inner blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 300; line-height: 1.5; color: var(--slate);
+      font-style: italic;
+    }
+    .phil-inner blockquote em { color: var(--gold); font-style: normal; }
+    .phil-inner p {
+      margin-top: 2rem; font-size: 0.95rem; line-height: 1.8; color: var(--muted);
+    }
+
+    /* ── WHO IT'S FOR ── */
+    .audience-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem; max-width: 860px; margin: 0 auto;
+    }
+    .audience-card {
+      padding: 2rem; border-radius: 1rem;
+      border: 1px solid rgba(46,74,90,0.1);
+      background: white;
+    }
+    .audience-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .audience-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; color: var(--slate); margin-bottom: 0.6rem;
+    }
+    .audience-card p { font-size: 0.88rem; line-height: 1.7; color: var(--muted); }
+
+    /* ── WAITLIST ── */
+    .waitlist {
+      padding: 7rem 2rem;
+      text-align: center;
+      background: var(--slate);
+      color: var(--cream);
+    }
+    .waitlist .section-label { color: var(--gold); }
+    .waitlist h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300; color: var(--cream);
+      max-width: 550px; margin: 0 auto 1rem;
+    }
+    .waitlist p {
+      font-size: 0.95rem; color: rgba(244,242,238,0.65);
+      margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .waitlist-form {
+      display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+    }
+    .waitlist-form input {
+      padding: 0.85rem 1.4rem; border-radius: 2rem;
+      border: 1px solid rgba(244,242,238,0.25);
+      background: rgba(244,242,238,0.1);
+      color: var(--cream); font-size: 0.88rem;
+      font-family: 'DM Sans', sans-serif;
+      width: 280px; outline: none; transition: border 0.2s;
+    }
+    .waitlist-form input::placeholder { color: rgba(244,242,238,0.4); }
+    .waitlist-form input:focus { border-color: var(--gold); }
+    .waitlist-form button {
+      background: var(--gold); color: white;
+      border: none; border-radius: 2rem;
+      padding: 0.85rem 1.8rem; font-size: 0.88rem; font-weight: 500;
+      letter-spacing: 0.05em; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: all 0.25s;
+    }
+    .waitlist-form button:hover { background: #b8871e; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(46,74,90,0.1);
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--slate); letter-spacing: 0.06em;
+    }
+    footer p { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── SCROLL FADE IN ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+  <script async src="https://tally.so/widgets/embed.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">centered</span>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#who">Who it's for</a></li>
+    <li><a href="#waitlist">Join waitlist</a></li>
+  </ul>
+  <button class="nav-cta" data-tally-open="2E4yXL" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">Early Access</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="bg-rings" viewBox="0 0 900 900">
+    <circle cx="450" cy="450" r="150"/>
+    <circle cx="450" cy="450" r="250"/>
+    <circle cx="450" cy="450" r="350"/>
+    <circle cx="450" cy="450" r="430"/>
+  </svg>
+
+  <div class="rings-wrap">
+    <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="ring" cx="110" cy="110" r="100"/>
+      <circle class="ring" cx="110" cy="110" r="76"/>
+      <circle class="ring" cx="110" cy="110" r="52"/>
+      <circle class="ring" cx="110" cy="110" r="30"/>
+      <circle cx="110" cy="110" r="12" fill="url(#goldGrad)" class="dot-glow"/>
+      <defs>
+        <radialGradient id="goldGrad" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#e8b84b"/>
+          <stop offset="100%" stop-color="#c8972a"/>
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <p class="hero-tag">Anti-Doomscrolling App</p>
+  <h1>Your attention is the most <em>precious</em> thing you own.</h1>
+  <p class="hero-sub">Centered helps you reclaim it — not through willpower or rigid blocking, but through awareness, intention, and sustainable habits.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" data-tally-open="2E4yXL" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">Join the Waitlist</button>
+    <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+  </div>
+</section>
+
+<!-- PROBLEM STRIP -->
+<div class="problem-strip">
+  <p>By the time you've opened Instagram, your willpower is already at its lowest. <em>That's by design.</em> Centered intervenes before the loop begins.</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label reveal">Three Layers of Support</p>
+  <h2 class="section-title reveal">Designed to meet you at every stage of the habit cycle</h2>
+  <div class="layers-grid">
+    <div class="layer-card reveal">
+      <div class="layer-num">01</div>
+      <div class="layer-name">Before Opening</div>
+      <h3>Prevention</h3>
+      <p>Intercept the impulse before the engagement loop starts — the only moment you're still in control.</p>
+      <ul class="layer-features">
+        <li>Surface your morning intention</li>
+        <li>Show your real-time open count</li>
+        <li>Offer one-tap better alternatives</li>
+      </ul>
+    </div>
+    <div class="layer-card reveal">
+      <div class="layer-num">02</div>
+      <div class="layer-name">During Use</div>
+      <h3>Harm Reduction</h3>
+      <p>When you do scroll, gentle nudges keep you conscious — without nagging or shame.</p>
+      <ul class="layer-features">
+        <li>Smart timer awareness prompts</li>
+        <li>Loop detection (same content twice)</li>
+        <li>"What are you looking for?" check-ins</li>
+      </ul>
+    </div>
+    <div class="layer-card reveal">
+      <div class="layer-num">03</div>
+      <div class="layer-name">Long-term</div>
+      <h3>Habit Building</h3>
+      <p>The goal is independence — building self-awareness until you no longer need the app.</p>
+      <ul class="layer-features">
+        <li>Track what you did instead</li>
+        <li>Positive streaks, not shame streaks</li>
+        <li>Weekly reflections & pattern insights</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <div class="phil-inner">
+    <p class="section-label reveal">Our Philosophy</p>
+    <blockquote class="reveal">"The goal is not <em>abstinence</em> — it's intentionality. You decide when and why you scroll."</blockquote>
+    <p class="reveal">Social media has legitimate uses. Centered doesn't punish connection — it restores your agency over when you choose it. Conscious choices replace automatic habits, one moment at a time.</p>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<section id="who">
+  <p class="section-label reveal">Who It's For</p>
+  <h2 class="section-title reveal">Built for people whose attention is their livelihood</h2>
+  <div class="audience-grid">
+    <div class="audience-card reveal">
+      <div class="audience-icon">📚</div>
+      <h3>Students</h3>
+      <p>Ages 12–22, at the formative juncture where habits are set for life. Every hour reclaimed is an hour of learning, creating, or becoming.</p>
+    </div>
+    <div class="audience-card reveal">
+      <div class="audience-icon">💡</div>
+      <h3>Knowledge Workers</h3>
+      <p>Professionals whose work demands deep focus and creative thinking — constantly interrupted by an instinctive reach for the phone.</p>
+    </div>
+    <div class="audience-card reveal">
+      <div class="audience-icon">🌱</div>
+      <h3>Anyone Seeking Change</h3>
+      <p>You've tried blocking apps. You've deleted Instagram (then reinstalled it). You're ready for something that actually works with your psychology.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <p class="section-label">Be First</p>
+  <h2>Ready to take back control?</h2>
+  <p>Join the waitlist for early access when we launch.</p>
+  <button class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;" data-tally-open="2E4yXL" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">Join the Waitlist</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="logo">centered</span>
+  <p>© 2026 Centered. All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+
+</script>
+
+</body>
+</html>
